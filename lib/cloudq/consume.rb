@@ -7,18 +7,23 @@ module Cloudq
 
     def job(queue)
       a_job = get queue
-      perform a_job
-      delete queue, a_job["id"] 
+      if a_job
+        perform a_job
+        delete queue, a_job["id"] 
+      end
     end
 
   private
-    def peform(a_job)
+    def perform(a_job)
+      puts 'called perform'
       klass = Object.const_get(a_job["klass"])
       klass.perform(a_job["args"])
     end
     
     def get(queue)
-      JSON.parse(RestClient.get [Cloudq::Connection.url, queue].join('/'))
+      response = RestClient.get [Cloudq::Connection.url, queue].join('/')
+      return nil if response == 'empty'
+      JSON.parse(response) 
     end
 
     def delete(queue, job_id)
