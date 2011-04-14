@@ -5,8 +5,6 @@ module Cloudq
   module Consume
     extend self
 
-    include Cloudq::Helpers
-
     def job(queue)
       a_job = get queue
       perform a_job
@@ -20,7 +18,7 @@ module Cloudq
     end
     
     def get(queue)
-      JSON.parse(RestClient.get [Cloudq::Connection.url, queue])
+      JSON.parse(RestClient.get [Cloudq::Connection.url, queue].join('/'))
     end
 
     def delete(queue, job_id)

@@ -6,6 +6,6 @@ describe Cloudq::Consume do
     subject.job(:myqueue)
   end
 
-  #it 'performs job'
+  it 'performs job'
 end
 
