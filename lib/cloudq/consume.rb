@@ -2,32 +2,43 @@ require 'rest-client'
 require 'json'
 
 module Cloudq
-  module Consume
-    extend self
+  class Consume
+    attr_accessor :queu
 
-    def job(queue)
-      a_job = get queue
-      if a_job
+    def initialize(queue)
+      @queue = queue
+    end
+
+    def job
+      get do |a_job|
         perform a_job
-        delete queue, a_job["id"] 
+        delete a_job["id"]
       end
     end
 
   private
     def perform(a_job)
-      puts 'called perform'
       klass = Object.const_get(a_job["klass"])
       klass.perform(a_job["args"])
     end
     
-    def get(queue)
-      response = RestClient.get [Cloudq::Connection.url, queue].join('/')
-      return nil if response == 'empty'
-      JSON.parse(response) 
+    def get(&block)
+      RestClient.get url do |response|
+        if response.code == 200
+          result = JSON.parse(response)
+          return nil if result['status'] == 'empty'
+          yield result
+          result
+        end
+      end
     end
 
-    def delete(queue, job_id)
-      RestClient.delete [Cloudq::Connection.url, queue, job_id].join('/')
+    def delete(job_id)
+      RestClient.delete [url, job_id].join('/')
+    end
+
+    def url
+      [Cloudq::Connection.url, @queue].join('/')
     end
 
  

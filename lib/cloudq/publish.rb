@@ -11,7 +11,8 @@ module Cloudq
 
   private
     def post(queue, job)
-      RestClient.post [Cloudq::Connection.url, queue].join('/'), job.to_json
+      headers = {:content_type => :json, :accept => :json}
+      RestClient.post [Cloudq::Connection.url, queue].join('/'), job, headers
     end
 
 
