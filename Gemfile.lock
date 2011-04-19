@@ -1,7 +1,16 @@
+PATH
+  remote: .
+  specs:
+    cloudq_client (0.0.3)
+      rest-client (>= 1.6.1)
+
 GEM
   remote: http://rubygems.org/
   specs:
     diff-lcs (1.1.2)
+    mime-types (1.16)
+    rest-client (1.6.1)
+      mime-types (>= 1.16)
     rspec (2.5.0)
       rspec-core (~> 2.5.0)
       rspec-expectations (~> 2.5.0)
@@ -15,4 +24,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  rspec
+  cloudq_client!
+  rspec (>= 2.5.0)

@@ -2,17 +2,17 @@ require 'rest-client'
 require 'json'
 
 module Cloudq
-  module Publish
-    extend self
-
-    def job(queue, klass, *args)
-      post(queue, :job => { :klass => klass, :args => args} )
+  class Publish < Base
+    def job(klass, *args)
+      post(:job => { :klass => klass, :args => args} )
     end
 
   private
-    def post(queue, job)
+    def post(job)
       headers = {:content_type => :json, :accept => :json}
-      RestClient.post [Cloudq::Connection.url, queue].join('/'), job, headers
+      RestClient.post [Cloudq::Connection.url, @queue].join('/'), job, headers do |response|
+        JSON.parse(response)['status'] == 'success'
+      end
     end
 
 

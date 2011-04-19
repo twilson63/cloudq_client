@@ -33,7 +33,7 @@ delete it from the queue.
     Cloudq::Connection.url = 'http://donuts.com'
 
     loop do
-      Cloudq::Consume.job(:make_the_donuts)
+      Cloudq::Consume.new(:make_the_donuts).job
       sleep 5
     end 
 
@@ -50,11 +50,7 @@ queue.
 
     Cloudq::Connection.url = 'http://donuts.com'
 
-    Cloudq::Publish.job(:make_donuts, 
-      :job => {
-        :klass => 'Bake', 
-        :args => { :type => 'glazed' } 
-      }
-    )
+    Cloudq::Publish.new(:make_donuts).job(:make_donuts, 'Bake', :type =>
+'glazed')
 
 

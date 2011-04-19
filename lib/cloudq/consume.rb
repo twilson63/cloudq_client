@@ -1,14 +1,5 @@
-require 'rest-client'
-require 'json'
-
 module Cloudq
-  class Consume
-    attr_accessor :queu
-
-    def initialize(queue)
-      @queue = queue
-    end
-
+  class Consume < Base
     def job
       get do |a_job|
         perform a_job
