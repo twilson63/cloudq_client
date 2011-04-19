@@ -6,14 +6,13 @@ require 'lib/cloudq/consume'
 class FaxSend
   def self.perform(*args)
     puts "Fax Stuff"
-    
+
   end
 end
 
 Cloudq::Connection.url = 'https://cloudq.heroku.com'
 
-loop do
+Cloudq::Worker.new(:fax).run do
   print "."
-  Cloudq::Consume.job :fax_send
-  sleep 5
+  sleep 1
 end

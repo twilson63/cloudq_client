@@ -11,9 +11,8 @@ end
 
 Cloudq::Connection.url = 'http://cloudq.heroku.com'
 
-loop do
+Cloudq::Worker.new(:mail).run do
   print "."
-  Cloudq::Consume.job :mail
-  sleep 5
+  sleep 1
 end
 

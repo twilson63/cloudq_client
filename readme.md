@@ -1,56 +1,54 @@
 # Cloudq Client
 
-This is the Cloudq Client Gem, it has both the consumer and publisher
-modules.
+(In Development Mode)
 
-## The Job
+## What is it?
 
-The Job is the JSON message that is published to the queue server to be
-consumed by a worker.  The queue server can have one to many queues and
-you can create one to many workers.  With Cloudq you can have these
-workers all over the internet.  The Cloudq server is a rack application
-so you can do awesome things with rack middleware to add authentication,
-encryption, logging, etc.  All using Rack Middleware.
+Cloudq is a job queue system that allows you to publish or subscribe to queues
+anywhere in the cloud.  
 
-The job message is simple: (It is a json object )
+Cloudq_Client is a ruby implementation of the cloudq protocol that makes publishing jobs
+and consuming jobs in ruby, very easy.
 
-    { 'job': { 'klass': 'Archive', 'args': [1] }}
+For more information on the cloudq protocol see [http://cloudq.heroku.com](http://cloudq.heroku.com)
 
-Args can be a hash or array.
+## Requirements
 
-## The Consumer
+You need a cloudq job server, if you do not have a cloudq job server to connect to, then you 
+need to set one up.  If you do have a cloudq server, then for this client to work you need the
+following:
 
-The consumer will reserve a job from the queue then perform the job and
-delete it from the queue.
+* Ruby 1.9
+* RubyGems
 
-### Sample Consumer Worker
+And the Cloudq Gem depends on the rest-client gem, but it should install when you install the gem.
 
-    require 'cloudq/consume'
-    # You must require the files that have the Job you need to perform
+## Install
 
-    require 'donut/job'
+    gem install cloudq_client
 
-    Cloudq::Connection.url = 'http://donuts.com'
+## How do I publish a job?
 
-    loop do
-      Cloudq::Consume.new(:make_the_donuts).job
+    require 'cloudq'
+    
+    Cloudq::Connection.url = 'http://your.cloudq.server'
+    
+    # Publish Job to a queue called - awesome
+    
+    Cloudq::Publish(:awesome).job 'Awesome', :type => 'Sauce'
+    
+
+
+## How do I create a worker?
+
+    require 'cloudq'
+    
+    Cloudq::Connection.url = 'http://your.cloudq.server'
+
+    # Check Q every 5 seconds
+    Cloudq::Worker.new(:awesome).run do
+      print '.'
       sleep 5
-    end 
-
-## The Publisher
-
-The publisher will create a job on the queue, the great thing about the
-publisher, is that it does not have to know the klass or the job that
-you want your worker to perform.  It just published the job on the
-queue.
-
-### Sample Publisher
-
-    require 'cloudq/publish'
-
-    Cloudq::Connection.url = 'http://donuts.com'
-
-    Cloudq::Publish.new(:make_donuts).job(:make_donuts, 'Bake', :type =>
-'glazed')
-
+    end
+      
 
