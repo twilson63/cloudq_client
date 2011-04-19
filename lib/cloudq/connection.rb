@@ -2,7 +2,15 @@ module Cloudq
   module Connection
     extend self
 
-    attr_accessor :url
+    def url
+      @url
+    end
+
+    def url=(uri)
+      raise "Bad URL" unless uri =~ /^http/
+      @url = uri
+    end
+
   end
 end
 

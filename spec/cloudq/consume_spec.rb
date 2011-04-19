@@ -9,13 +9,25 @@ end
 
 describe Cloudq::Consume do
   subject { Cloudq::Consume.new(:myqueue) }
-  before do
-    #Cloudq::Connection.url = "http://localhost:3000"
-    Cloudq::Connection.url = "http://cloudq.heroku.com"
-    Cloudq::Publish.new(:myqueue).job('Archive', :hello => 'World')
+  context 'successfully' do
+    before do
+      Cloudq::Connection.url = "http://localhost:3000"
+      RestClient.should_receive(:get).and_return('{"klass": "Archive", "args": {"hello": "World"}}')
+    end
+    it 'consumes job' do
+      subject.job.should be_true
+    end
   end
-  it 'consumes job' do
-    subject.job.should be_true
+
+  context 'unsuccessfully' do
+    before do
+      Cloudq::Connection.url = "http://localhost:3000"
+      RestClient.should_receive(:get).and_return('{"status": "empty"}')
+    end
+    it 'consumes job' do
+      subject.job.should == '{"status": "empty"}'
+    end
+
   end
 
 end
