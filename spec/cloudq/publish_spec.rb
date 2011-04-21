@@ -6,6 +6,9 @@ describe Cloudq::Publish do
     Cloudq::Connection.url = "http://localhost:3000"
   end
 
+  it 'should jsonize job' do
+    subject.send(:jsonize, {:job => {:klass => 'Archive', :args => [{:hello => 'world'}]}}).should == %Q{{"job":{"klass":"Archive","args":[{"hello":"world"}]}}}
+  end
 
   it 'a job to the queue successfully' do
     RestClient.should_receive(:post).and_return('{"status": "success"}')

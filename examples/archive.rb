@@ -4,7 +4,7 @@ require 'cloudq'
 
 class Archive
   def self.perform(*args)
-    puts "Archive Stuff - #{args.first['hello']}"
+    puts args.first.inspect
   end
 end
 
