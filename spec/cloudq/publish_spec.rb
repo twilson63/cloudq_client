@@ -12,7 +12,7 @@ describe Cloudq::Publish do
 
   it 'a job to the queue successfully' do
     RestClient.should_receive(:post).and_return('{"status": "success"}')
-    subject.job('Archive', :hello => :world).should be_true
+    subject.job('Archive', 'awesome','sauce').should be_true
   end
 
   it 'a job to the queue unsuccessfully' do

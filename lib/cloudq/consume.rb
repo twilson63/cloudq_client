@@ -10,7 +10,7 @@ module Cloudq
   private
     def perform(a_job)
       klass = Object.const_get(a_job["klass"])
-      klass.perform(a_job["args"])
+      klass.perform(*a_job["args"])
     end
     
     def get(&block)
