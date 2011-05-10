@@ -1,3 +1,4 @@
+require 'backports'
 require 'rest-client'
 require 'json'
 
@@ -11,9 +12,12 @@ module Cloudq
   private
     def post(data)
       headers = {:content_type => :json, :accept => :json}
-      RestClient.post [Cloudq::Connection.url, @queue].join('/'), data, headers do |response|
-        JSON.parse(response)['status'] == 'success'
-      end
+      # RestClient.post [Cloudq::Connection.url, @queue].join('/'), data, headers do |response|
+      #   JSON.parse(response)['status'] == 'success'
+      # end
+      resp = RestClient.post [Cloudq::Connection.url, @queue].join('/'), data, headers
+      JSON.parse(resp)['status'] == 'success'
+
     end
 
     def jsonize(data)

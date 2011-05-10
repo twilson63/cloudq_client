@@ -12,16 +12,24 @@ module Cloudq
       klass = Object.const_get(a_job["klass"])
       klass.perform(*a_job["args"])
     end
-    
+
     def get(&block)
-      RestClient.get url do |response|
-        if response.code == 200
-          result = JSON.parse(response)
-          return nil if result['status'] == 'empty'
-          yield result
-          result
-        end
+      resp = RestClient.get url
+      if resp.code == 200
+        result = JSON.parse(resp)
+        return nil if result['status'] == 'empty'
+        yield result
+        result
       end
+
+      # RestClient.get url do |response|
+      #   if response.code == 200
+      #     result = JSON.parse(response)
+      #     return nil if result['status'] == 'empty'
+      #     yield result
+      #     result
+      #   end
+      # end
     end
 
     def delete(job_id)
@@ -32,9 +40,9 @@ module Cloudq
       [Cloudq::Connection.url, @queue].join('/')
     end
 
- 
+
 
   end
 end
 
-    
+
