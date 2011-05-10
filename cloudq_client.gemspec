@@ -16,6 +16,8 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.add_development_dependency "rspec", ">= 2.5.0"
   s.add_dependency "rest-client", ">= 1.6.1"
+  s.add_dependency "backports", ">= 0"
+
   s.files        = Dir.glob("{lib}/**/*") + %w(LICENSE readme.md)
   s.require_path = 'lib'
 end
