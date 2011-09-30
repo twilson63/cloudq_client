@@ -7,7 +7,7 @@ require 'cloudq'
 require 'faker'
 Cloudq::Connection.url = 'http://cloudq.heroku.com'
 
-20.times do
+100.times do
 Cloudq::Publish.new(:archive).job 'Archive',
   :customer => {
     :first_name => Faker::Name.first_name,

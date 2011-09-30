@@ -1,7 +1,14 @@
 # Post Test
 echo '{ "job": { "klass": "Archive", "args": { "hello": "World" }}}' >> postfile
 
+
 ab -n 1000 -c 100 -T application/json -p postfile http://cloudq.heroku.com/archive
 
+ab -n 100 -c 100 -T application/json -p postfile http://morning-sky-457.herokuapp.com/archive
+
+ab -n 1000 -c 100 -T application/json -p postfile http://erx-cloudq.jrsapp.com/archive
+
 # Get Test
-ab -n 1000 -c 100 http://cloudq.heroku.com/archive
+ab -n 1000 -c 100 http://http://severe-snow-568.herokuapp.com/archive
+
+ab -n 10 -c 5 -T application/json -p postfile http://localhost:8000/archive
