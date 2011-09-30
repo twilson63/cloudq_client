@@ -1,19 +1,16 @@
 module Cloudq
   class Request < Base
     def job
-      get do |a_job|
-        yield job
-      end
+      get 
     end
 
   private
 
-    def get(&block)
+    def get
       resp = RestClient.get url
       if resp.code == 200
         result = JSON.parse(resp)
         return nil if result['status'] == 'empty'
-        yield result
         result
       end
     end
