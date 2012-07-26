@@ -16,7 +16,7 @@ describe Cloudq::Publish do
   end
 
   it 'a job to the queue unsuccessfully' do
-    RestClient.should_receive(:post).and_return(false)
+    RestClient.should_receive(:post).and_return('{"status": "failed"}')
     subject.job('Archive', :hello => :world).should be_false
   end
 
