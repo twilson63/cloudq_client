@@ -7,7 +7,7 @@ describe Cloudq::Publish do
   end
 
   it 'should jsonize job' do
-    subject.send(:jsonize, {:job => {:klass => 'Archive', :args => [{:hello => 'world'}]}}).should == %Q{{"job":{"klass":"Archive","args":[{"hello":"world"}]}}}
+    subject.send(:jsonize, {:job => {:klass => 'Archive', :args => [{:hello => 'world'}]}}).should == %Q{{"job":{"args":[{"hello":"world"}],"klass":"Archive"}}}
   end
 
   it 'a job to the queue successfully' do
