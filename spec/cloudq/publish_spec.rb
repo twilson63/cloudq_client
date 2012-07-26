@@ -20,6 +20,15 @@ describe Cloudq::Publish do
     subject.job('Archive', :hello => :world).should be_false
   end
 
+  it 'should successfully post a job to the newer version of cloudq' do
+    RestClient.should_receive(:post).and_return('{"ok": true}')
+    subject.job('Archive', 'awesome','sauce').should be_true
+  end
+
+  it 'should unsuccessfully post a job to the newer version of cloudq' do
+    RestClient.should_receive(:post).and_return('{"ok": false}')
+    subject.job('Archive', 'awesome','sauce').should be_false
+  end
 
 end
 
