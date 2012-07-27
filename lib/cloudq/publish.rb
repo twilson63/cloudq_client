@@ -16,8 +16,9 @@ module Cloudq
       #   JSON.parse(response)['status'] == 'success'
       # end
       resp = RestClient.post [Cloudq::Connection.url, @queue].join('/'), data, headers
-      JSON.parse(resp)['status'] == 'success'
+      parsed_resp = JSON.parse(resp)
 
+      parsed_resp['status'] == 'success' || parsed_resp['ok'] == true
     end
 
     def jsonize(data)

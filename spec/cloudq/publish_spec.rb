@@ -7,7 +7,7 @@ describe Cloudq::Publish do
   end
 
   it 'should jsonize job' do
-    subject.send(:jsonize, {:job => {:klass => 'Archive', :args => [{:hello => 'world'}]}}).should == %Q{{"job":{"klass":"Archive","args":[{"hello":"world"}]}}}
+    subject.send(:jsonize, {:job => {:klass => 'Archive', :args => [{:hello => 'world'}]}}).should == %Q{{"job":{"args":[{"hello":"world"}],"klass":"Archive"}}}
   end
 
   it 'a job to the queue successfully' do
@@ -16,10 +16,19 @@ describe Cloudq::Publish do
   end
 
   it 'a job to the queue unsuccessfully' do
-    RestClient.should_receive(:post).and_return(false)
+    RestClient.should_receive(:post).and_return('{"status": "failed"}')
     subject.job('Archive', :hello => :world).should be_false
   end
 
+  it 'should successfully post a job to the newer version of cloudq' do
+    RestClient.should_receive(:post).and_return('{"ok": true}')
+    subject.job('Archive', 'awesome','sauce').should be_true
+  end
+
+  it 'should unsuccessfully post a job to the newer version of cloudq' do
+    RestClient.should_receive(:post).and_return('{"ok": false}')
+    subject.job('Archive', 'awesome','sauce').should be_false
+  end
 
 end
 
