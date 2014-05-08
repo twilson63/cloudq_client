@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cloudq_client (0.0.7)
+    cloudq_client (0.0.8)
       backports
       json
       rest-client (>= 1.6.1)
